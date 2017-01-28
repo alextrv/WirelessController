@@ -5,11 +5,17 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.SystemClock;
+import android.provider.Settings;
+import android.util.Log;
 
 public class ConnectionService extends IntentService {
 
-    private static final int RUN_INTERVAL = 60 * 1000;
+    private static final long RUN_INTERVAL = 60 * 1000;
+    private static final long DELAY_TO_WIFI_CONNECT = 15 * 1000;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, ConnectionService.class);
@@ -42,5 +48,38 @@ public class ConnectionService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        boolean stopInAirplaneMode = AppPreferences.getPrefStopInAirplaneMode(getApplicationContext());
+        if (stopInAirplaneMode && isAirplaneModeOn(getApplicationContext())) {
+            Log.i("AIRPLANE_MODE_ON", "TRUE");
+            return;
+        }
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager.isWifiEnabled()) {
+            disableNotConnectedWifi(wifiManager);
+        } else {
+            wifiManager.setWifiEnabled(true);
+            SystemClock.sleep(DELAY_TO_WIFI_CONNECT);
+            disableNotConnectedWifi(wifiManager);
+        }
     }
+
+    private void disableNotConnectedWifi(WifiManager wifiManager) {
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        if (wifiInfo.getSSID() == null) {
+            wifiManager.setWifiEnabled(false);
+        } else {
+            Log.i("WIFI_SSID", wifiInfo.getSSID());
+        }
+    }
+
+    private static boolean isAirplaneModeOn(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return Settings.System.getInt(context.getContentResolver(),
+                    Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+        } else {
+            return Settings.Global.getInt(context.getContentResolver(),
+                    Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
+        }
+    }
+
 }
