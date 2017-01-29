@@ -2,4 +2,6 @@
     <string name="app_name">UniversalController</string>
     <string name="start_service">Start service</string>
     <string name="stop_service_in_airplane_mode">Stop service in Airplane Mode</string>
+    <string name="enable_whitelist">Enable using whitelist</string>
+    <string name="add_current_wifi_to_whitelist">Add current wifi to whitelist</string>
 </resources>
