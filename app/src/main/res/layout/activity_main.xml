@@ -31,4 +31,25 @@
         android:paddingBottom="12dp"
         android:text="@string/stop_service_in_airplane_mode"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <CheckBox
+        android:id="@+id/enable_whitelist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/enable_whitelist"/>
+
+    <Button
+        android:id="@+id/add_wifi_to_whitelist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:text="@string/add_current_wifi_to_whitelist"/>
+
 </LinearLayout>
