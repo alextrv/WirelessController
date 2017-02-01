@@ -52,4 +52,11 @@
         android:textSize="17sp"
         android:text="@string/add_current_wifi_to_whitelist"/>
 
+    <Button
+        android:id="@+id/show_whitelist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:text="@string/show_whitelist"/>
+
 </LinearLayout>
