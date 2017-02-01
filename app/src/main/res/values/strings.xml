@@ -2,6 +2,14 @@
     <string name="app_name">UniversalController</string>
     <string name="start_service">Start service</string>
     <string name="stop_service_in_airplane_mode">Stop service in Airplane Mode</string>
-    <string name="enable_whitelist">Enable using whitelist</string>
-    <string name="add_current_wifi_to_whitelist">Add current wifi to whitelist</string>
+    <string name="enable_whitelist">Enable using white list</string>
+    <string name="add_current_wifi_to_whitelist">Add current wifi to white list</string>
+    <string name="enable_wifi">Please enable wifi and connect to network you want to add</string>
+    <string name="connect_to_wifi">Please connect to wifi network</string>
+    <string name="already_in_whitelist">Current wifi network already in white list</string>
+    <string name="added_to_whitelist">Wifi network added to white list</string>
+    <string name="ssid_bssid">%1$s (%2$s)</string>
+    <string name="wifi_whitelist_name">WI-FI white list</string>
+    <string name="show_whitelist">Show wifi white list</string>
+    <string name="sure_delete">Are you sure you want to delete this wifi network?</string>
 </resources>
