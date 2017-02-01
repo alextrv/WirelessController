@@ -9,6 +9,7 @@ public class AppPreferences {
 
     private static final String PREF_STOP_IN_AIRPLANE_MODE = "prefStopInAirplaneMode";
     private static final String PREF_WIFI_WHITELIST = "prefWifiWhitelist";
+    private static final String PREF_ENABLE_WHITELIST = "prefEnableWhitelist";
 
     public static boolean getPrefStopInAirplaneMode(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -31,6 +32,18 @@ public class AppPreferences {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putStringSet(PREF_WIFI_WHITELIST, values)
+                .apply();
+    }
+
+    public static boolean getPrefEnableWhitelist(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_ENABLE_WHITELIST, false);
+    }
+
+    public static void setPrefEnableWhitelist(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_ENABLE_WHITELIST, value)
                 .apply();
     }
 
