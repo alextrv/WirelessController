@@ -12,6 +12,8 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 
+import java.util.Set;
+
 public class ConnectionService extends IntentService {
 
     private static final long RUN_INTERVAL = 60 * 1000;
@@ -50,7 +52,7 @@ public class ConnectionService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         boolean stopInAirplaneMode = AppPreferences.getPrefStopInAirplaneMode(getApplicationContext());
         if (stopInAirplaneMode && isAirplaneModeOn(getApplicationContext())) {
-            Log.i("AIRPLANE_MODE_ON", "TRUE");
+//            Log.i("AIRPLANE_MODE_ON", "TRUE");
             return;
         }
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -60,12 +62,28 @@ public class ConnectionService extends IntentService {
             wifiManager.setWifiEnabled(true);
             SystemClock.sleep(DELAY_TO_WIFI_CONNECT);
             disableNotConnectedWifi(wifiManager);
+            boolean enableWhitelist = AppPreferences.getPrefEnableWhitelist(getApplicationContext());
+            if (wifiManager.isWifiEnabled() && enableWhitelist) {
+                Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(getApplicationContext());
+                if (wifiWhitelist != null && !wifiWhitelist.isEmpty()) {
+                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                    String BSSID = wifiInfo.getBSSID();
+                    String SSID = wifiInfo.getSSID();
+                    String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);
+//                    Log.i("SSID_BSSID", SSID_BSSID);
+                    if (BSSID == null || !wifiWhitelist.contains(SSID_BSSID)) {
+                        wifiManager.setWifiEnabled(false);
+                    }
+                } else {
+                    wifiManager.setWifiEnabled(false);
+                }
+            }
         }
     }
 
     private void disableNotConnectedWifi(WifiManager wifiManager) {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        if (wifiInfo.getSSID() == null) {
+        if (wifiInfo.getBSSID() == null) {
             wifiManager.setWifiEnabled(false);
         } else {
             Log.i("WIFI_SSID", wifiInfo.getSSID());
