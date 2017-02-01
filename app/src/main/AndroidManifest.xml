@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
         <service android:name=".ConnectionService"/>
+        <activity android:name=".WhitelistActivity"
+                  android:parentActivityName=".MainActivity"
+                  android:label="@string/wifi_whitelist_name"/>
     </application>
 
 </manifest>
