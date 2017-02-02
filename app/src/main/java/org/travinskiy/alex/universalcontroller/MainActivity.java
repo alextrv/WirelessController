@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ConnectionService.setServiceAlarm(MainActivity.this, isChecked);
+                AppPreferences.setPrefIsAlarmOn(getApplicationContext(), isChecked);
             }
         });
 
