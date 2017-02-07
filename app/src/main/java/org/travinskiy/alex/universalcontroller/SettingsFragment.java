@@ -1,0 +1,70 @@
+package org.travinskiy.alex.universalcontroller;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
+
+public class SettingsFragment extends PreferenceFragment {
+
+    private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    if (key.equals(AppPreferences.PREF_IS_ALARM_ON)) {
+                        boolean isOn = sharedPreferences.getBoolean(key, true);
+                        ConnectionService.setServiceAlarm(getActivity(), isOn);
+                    } else if (key.equals(AppPreferences.PREF_START_TIME)) {
+                        Preference preference = findPreference(key);
+                        preference.setSummary(sharedPreferences.getString(key, TimePickerFragment.START_TIME_DEFAULT));
+                    } else if (key.equals(AppPreferences.PREF_END_TIME)) {
+                        Preference preference = findPreference(key);
+                        String startTime = AppPreferences.getPrefStartTime(getActivity());
+                        String endTime = sharedPreferences.getString(key, TimePickerFragment.END_TIME_DEFAULT);
+                        if (TimePickerFragment.isEndTimeNextDay(startTime, endTime)) {
+                            String summary = getResources().getString(R.string.end_time_next_day, endTime);
+                            preference.setSummary(summary);
+                        } else {
+                            preference.setSummary(endTime);
+                        }
+                    } else if (key.equals(AppPreferences.PREF_REPEAT_DISABLE_WIRELESS)) {
+                        setListPreferenceSummary(key, sharedPreferences.getString(key,
+                                getString(R.string.pref_repeatDisableWireless_default)),
+                                R.array.pref_repeatDisableWireless_entries);
+                    }
+                }
+            };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        addPreferencesFromResource(R.xml.preferences);
+
+        setListPreferenceSummary(AppPreferences.PREF_REPEAT_DISABLE_WIRELESS,
+                AppPreferences.getPrefRepeatDisableWireless(getActivity()),
+                R.array.pref_repeatDisableWireless_entries);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(mPreferenceChangeListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(mPreferenceChangeListener);
+    }
+
+    public void setListPreferenceSummary(String key, String value, int entriesId) {
+        Preference preference = findPreference(key);
+        String[] prefEntries = getResources().getStringArray(entriesId);
+        int index = Integer.parseInt(value);
+        preference.setSummary(prefEntries[index]);
+    }
+
+}

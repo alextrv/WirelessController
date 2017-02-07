@@ -2,6 +2,8 @@ package org.travinskiy.alex.universalcontroller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +11,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +49,52 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
 
         updateUI();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.whitelist_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_wifi:
+                addWifiToWhitelist();
+                updateUI();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void addWifiToWhitelist() {
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager.isWifiEnabled()) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo.getBSSID() != null) {
+                Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(getApplicationContext());
+                if (wifiWhitelist == null) {
+                    wifiWhitelist = new HashSet<>();
+                }
+                String SSID = wifiInfo.getSSID();
+                String BSSID = wifiInfo.getBSSID();
+                String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);
+                boolean isAdded = wifiWhitelist.add(SSID_BSSID);
+                if (isAdded) {
+                    AppPreferences.setPrefWifiWhitelist(getApplicationContext(), wifiWhitelist);
+                    Toast.makeText(getApplicationContext(), R.string.added_to_whitelist, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.already_in_whitelist, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.connect_to_wifi, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.enable_wifi, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateUI() {

@@ -40,7 +40,7 @@ public class ConnectionService extends IntentService {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (turnOn) {
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
                     RUN_INTERVAL, pendingIntent);
         } else {
             alarmManager.cancel(pendingIntent);

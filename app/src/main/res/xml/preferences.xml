@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_category_wifi_title"
+        android:key="pref_category_wifi_settings">
+
+        <SwitchPreference
+            android:title="@string/enable_whitelist"
+            android:key="prefEnableWhitelist"
+            android:defaultValue="false"/>
+
+        <Preference
+            android:title="@string/show_whitelist">
+            <intent
+                android:targetPackage="org.travinskiy.alex.universalcontroller"
+                android:targetClass="org.travinskiy.alex.universalcontroller.WhitelistActivity"/>
+        </Preference>
+
+        <SwitchPreference
+            android:title="@string/disable_wireless"
+            android:key="prefDisableWireless"
+            android:defaultValue="false"/>
+
+        <ListPreference
+            android:title="@string/repeat"
+            android:key="prefRepeatDisableWireless"
+            android:dependency="prefDisableWireless"
+            android:entries="@array/pref_repeatDisableWireless_entries"
+            android:entryValues="@array/pref_repeatDisableWireless_values"
+            android:defaultValue="@string/pref_repeatDisableWireless_default"/>
+
+        <org.travinskiy.alex.universalcontroller.TimePickerFragment
+            android:title="@string/start_time"
+            android:dialogTitle=""
+            android:dependency="prefDisableWireless"
+            android:key="prefStartTime"
+            android:defaultValue="23:00"/>
+
+        <org.travinskiy.alex.universalcontroller.TimePickerFragment
+            android:title="@string/end_time"
+            android:dialogTitle=""
+            android:dependency="prefDisableWireless"
+            android:key="prefEndTime"
+            android:defaultValue="7:00"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_category_other_title"
+        android:key="pref_category_other_settings">
+
+        <SwitchPreference
+            android:title="@string/start_service"
+            android:key="prefIsAlarmOn"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:title="@string/stop_service_in_airplane_mode"
+            android:key="prefStopInAirplaneMode"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
