@@ -36,4 +36,20 @@
 
     <string name="repeat">Repeat</string>
 
+    <string name="service_interval">Service run interval</string>
+
+    <string-array name="pref_serviceRunInterval_entries">
+        <item>15 Minutes</item>
+        <item>30 Minutes</item>
+        <item>60 Minutes</item>
+    </string-array>
+
+    <string-array name="pref_serviceRunInterval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_serviceRunInterval_default">0</string>
+
 </resources>

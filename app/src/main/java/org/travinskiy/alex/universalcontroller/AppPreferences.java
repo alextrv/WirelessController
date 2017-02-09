@@ -15,6 +15,7 @@ public class AppPreferences {
     public static final String PREF_START_TIME = "prefStartTime";
     public static final String PREF_END_TIME = "prefEndTime";
     public static final String PREF_REPEAT_DISABLE_WIRELESS = "prefRepeatDisableWireless";
+    public static final String PREF_SERVICE_RUN_INTERVAL = "prefServiceRunInterval";
 
     public static boolean getPrefStopInAirplaneMode(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -76,9 +77,10 @@ public class AppPreferences {
                 .apply();
     }
 
-    public static String getPrefRepeatDisableWireless(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+    public static int getPrefRepeatDisableWireless(Context context) {
+        String value = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_REPEAT_DISABLE_WIRELESS, context.getString(R.string.pref_repeatDisableWireless_default));
+        return Integer.parseInt(value);
     }
 
     public static void setPrefRepeatDisableWireless(Context context, String value) {
@@ -86,6 +88,12 @@ public class AppPreferences {
                 .edit()
                 .putString(PREF_REPEAT_DISABLE_WIRELESS, value)
                 .apply();
+    }
+
+    public static int getPrefServiceRunInterval(Context context) {
+        String value = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(PREF_SERVICE_RUN_INTERVAL, context.getString(R.string.pref_serviceRunInterval_default));
+        return Integer.parseInt(value);
     }
 
 }

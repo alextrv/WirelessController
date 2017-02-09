@@ -56,6 +56,13 @@
             android:title="@string/stop_service_in_airplane_mode"
             android:key="prefStopInAirplaneMode"
             android:defaultValue="false"/>
+        <ListPreference
+            android:title="@string/service_interval"
+            android:key="prefServiceRunInterval"
+            android:dependency="prefIsAlarmOn"
+            android:entries="@array/pref_serviceRunInterval_entries"
+            android:entryValues="@array/pref_serviceRunInterval_values"
+            android:defaultValue="@string/pref_serviceRunInterval_default"/>
 
     </PreferenceCategory>
 </PreferenceScreen>

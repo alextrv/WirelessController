@@ -8,6 +8,7 @@ public class StartupReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean isOn = AppPreferences.getPrefIsAlarmOn(context);
-        ConnectionService.setServiceAlarm(context, isOn);
+        int intervalIndex = AppPreferences.getPrefServiceRunInterval(context);
+        ConnectionService.setServiceAlarm(context, isOn, intervalIndex);
     }
 }

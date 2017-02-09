@@ -13,10 +13,13 @@ public class SettingsFragment extends PreferenceFragment {
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     if (key.equals(AppPreferences.PREF_IS_ALARM_ON)) {
                         boolean isOn = sharedPreferences.getBoolean(key, true);
-                        ConnectionService.setServiceAlarm(getActivity(), isOn);
+                        int intervalIndex = AppPreferences.getPrefServiceRunInterval(getActivity());
+                        ConnectionService.setServiceAlarm(getActivity(), isOn, intervalIndex);
+
                     } else if (key.equals(AppPreferences.PREF_START_TIME)) {
                         Preference preference = findPreference(key);
                         preference.setSummary(sharedPreferences.getString(key, TimePickerFragment.START_TIME_DEFAULT));
+
                     } else if (key.equals(AppPreferences.PREF_END_TIME)) {
                         Preference preference = findPreference(key);
                         String startTime = AppPreferences.getPrefStartTime(getActivity());
@@ -27,10 +30,18 @@ public class SettingsFragment extends PreferenceFragment {
                         } else {
                             preference.setSummary(endTime);
                         }
+
                     } else if (key.equals(AppPreferences.PREF_REPEAT_DISABLE_WIRELESS)) {
-                        setListPreferenceSummary(key, sharedPreferences.getString(key,
-                                getString(R.string.pref_repeatDisableWireless_default)),
-                                R.array.pref_repeatDisableWireless_entries);
+                        int value = Integer.parseInt(sharedPreferences.getString(key,
+                                getString(R.string.pref_repeatDisableWireless_default)));
+                        setListPreferenceSummary(key, value, R.array.pref_repeatDisableWireless_entries);
+
+                    } else if (key.equals(AppPreferences.PREF_SERVICE_RUN_INTERVAL)) {
+                        int value = Integer.parseInt(sharedPreferences.getString(key,
+                                getString(R.string.pref_serviceRunInterval_default)));
+                        setListPreferenceSummary(key, value, R.array.pref_serviceRunInterval_entries);
+                        boolean isOn = AppPreferences.getPrefIsAlarmOn(getActivity());
+                        ConnectionService.setServiceAlarm(getActivity(), isOn, value);
                     }
                 }
             };
@@ -44,6 +55,10 @@ public class SettingsFragment extends PreferenceFragment {
         setListPreferenceSummary(AppPreferences.PREF_REPEAT_DISABLE_WIRELESS,
                 AppPreferences.getPrefRepeatDisableWireless(getActivity()),
                 R.array.pref_repeatDisableWireless_entries);
+
+        setListPreferenceSummary(AppPreferences.PREF_SERVICE_RUN_INTERVAL,
+                AppPreferences.getPrefServiceRunInterval(getActivity()),
+                R.array.pref_serviceRunInterval_entries);
     }
 
     @Override
@@ -60,10 +75,9 @@ public class SettingsFragment extends PreferenceFragment {
                 .unregisterOnSharedPreferenceChangeListener(mPreferenceChangeListener);
     }
 
-    public void setListPreferenceSummary(String key, String value, int entriesId) {
+    public void setListPreferenceSummary(String key, int index, int entriesId) {
         Preference preference = findPreference(key);
         String[] prefEntries = getResources().getStringArray(entriesId);
-        int index = Integer.parseInt(value);
         preference.setSummary(prefEntries[index]);
     }
 

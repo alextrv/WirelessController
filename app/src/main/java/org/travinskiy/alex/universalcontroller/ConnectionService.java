@@ -16,7 +16,11 @@ import java.util.Set;
 
 public class ConnectionService extends IntentService {
 
-    private static final long RUN_INTERVAL = 60 * 1000;
+    private static final long[] RUN_INTERVAL = {
+            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+            AlarmManager.INTERVAL_HALF_HOUR,
+            AlarmManager.INTERVAL_HOUR
+    };
     private static final long DELAY_TO_WIFI_CONNECT = 15 * 1000;
 
     public static Intent newIntent(Context context) {
@@ -33,7 +37,7 @@ public class ConnectionService extends IntentService {
         return pendingIntent != null;
     }
 
-    public static void setServiceAlarm(Context context, boolean turnOn) {
+    public static void setServiceAlarm(Context context, boolean turnOn, int runIntervalIndex) {
         Intent intent = newIntent(context);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
@@ -41,7 +45,7 @@ public class ConnectionService extends IntentService {
 
         if (turnOn) {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
-                    RUN_INTERVAL, pendingIntent);
+                    RUN_INTERVAL[runIntervalIndex], pendingIntent);
         } else {
             alarmManager.cancel(pendingIntent);
             pendingIntent.cancel();

@@ -15,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         boolean isOn = AppPreferences.getPrefIsAlarmOn(this);
-        ConnectionService.setServiceAlarm(this, isOn);
+        int intervalIndex = AppPreferences.getPrefServiceRunInterval(this);
+        ConnectionService.setServiceAlarm(this, isOn, intervalIndex);
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(android.R.id.content);
