@@ -1,19 +1,19 @@
 <resources>
-    <string name="app_name">UniversalController</string>
-    <string name="start_service">Start service</string>
-    <string name="stop_service_in_airplane_mode">Stop service in Airplane Mode</string>
-    <string name="enable_whitelist">Enable using white list</string>
-    <string name="add_current_wifi_to_whitelist">Add current wifi to white list</string>
-    <string name="enable_wifi">Please enable wifi and connect to network you want to add</string>
-    <string name="connect_to_wifi">Please connect to wifi network</string>
-    <string name="already_in_whitelist">Current wifi network already in white list</string>
-    <string name="added_to_whitelist">Wifi network added to white list</string>
+    <string name="app_name">Wireless Controller</string>
+    <string name="enable_service">Enable service</string>
+    <string name="stop_service_in_airplane_mode">Stop service in Airplane mode</string>
+    <string name="enable_whitelist">Use white list</string>
+    <string name="add_current_wifi_to_whitelist">Add current Wi-Fi</string>
+    <string name="enable_wifi">Please enable Wi-Fi and connect to network you want to add</string>
+    <string name="connect_to_wifi">Please connect to Wi-Fi network</string>
+    <string name="already_in_whitelist">Current Wi-Fi network already in white list</string>
+    <string name="added_to_whitelist">Wi-Fi network added to white list</string>
     <string name="ssid_bssid">%1$s (%2$s)</string>
-    <string name="wifi_whitelist_name">WI-FI white list</string>
-    <string name="show_whitelist">Show wifi white list</string>
-    <string name="sure_delete">Are you sure you want to delete this wifi network?</string>
+    <string name="wifi_whitelist_name">Wi-Fi white list</string>
+    <string name="show_whitelist">White list</string>
+    <string name="sure_delete">Are you sure you want to delete this Wi-Fi network?</string>
 
-    <string name="pref_category_wifi_title">Wi-Fi</string>
+    <string name="pref_category_wireless_title">Wireless networks</string>
     <string name="pref_category_other_title">Other</string>
 
     <string name="start_time">Start time</string>
@@ -51,5 +51,8 @@
     </string-array>
 
     <string name="pref_serviceRunInterval_default">0</string>
+
+    <string name="pref_category_rules_title">Automatic rules</string>
+    <string name="disable_bluetooth">Disable Bluetooth</string>
 
 </resources>

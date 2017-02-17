@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Wireless Controller</string>
+    <string name="enable_service">Включить сервис</string>
+    <string name="stop_service_in_airplane_mode">Приостановить работу в режиме авиаполёта</string>
+    <string name="enable_whitelist">Использовать белый список</string>
+    <string name="add_current_wifi_to_whitelist">Добавить текущую Wi-Fi сеть</string>
+    <string name="enable_wifi">Пожалуйста включите Wi-Fi и подключитесь к нужной сети</string>
+    <string name="connect_to_wifi">Пожалуйста подключитесь к Wi-Fi сети</string>
+    <string name="already_in_whitelist">Текущая Wi-Fi сеть уже в белом списке</string>
+    <string name="added_to_whitelist">Wi-Fi сеть добавлена в белый список</string>
+    <string name="ssid_bssid">%1$s (%2$s)</string>
+    <string name="wifi_whitelist_name">Белый список Wi-Fi</string>
+    <string name="show_whitelist">Белый список</string>
+    <string name="sure_delete">Вы уверены, что хотите удалить эту Wi-Fi сеть?</string>
+
+    <string name="pref_category_wireless_title">Безпроводные сети</string>
+    <string name="pref_category_other_title">Другое</string>
+
+    <string name="start_time">Время начала</string>
+    <string name="end_time">Время конца</string>
+
+    <string name="disable_wireless">Выключить безпроводные сети</string>
+    <string name="end_time_next_day">Следующего дня в %1$s</string>
+
+    <string-array name="pref_repeatDisableWireless_entries">
+        <item>Один раз</item>
+        <item>Каждый день</item>
+    </string-array>
+
+    <string-array name="pref_repeatDisableWireless_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string name="pref_repeatDisableWireless_default">0</string>
+
+    <string name="repeat">Повторять</string>
+
+    <string name="service_interval">Интервал запуска сервиса</string>
+
+    <string-array name="pref_serviceRunInterval_entries">
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>60 минут</item>
+    </string-array>
+
+    <string-array name="pref_serviceRunInterval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_serviceRunInterval_default">0</string>
+
+    <string name="pref_category_rules_title">Правила</string>
+    <string name="disable_bluetooth">Выключать Bluetooth</string>
+
+</resources>
