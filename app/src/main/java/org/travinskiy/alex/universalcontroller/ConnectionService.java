@@ -3,6 +3,7 @@ package org.travinskiy.alex.universalcontroller;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
@@ -55,10 +56,18 @@ public class ConnectionService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         boolean stopInAirplaneMode = AppPreferences.getPrefStopInAirplaneMode(getApplicationContext());
-        if (stopInAirplaneMode && isAirplaneModeOn(getApplicationContext())) {
+        if ((stopInAirplaneMode && isAirplaneModeOn(getApplicationContext())) ||
+                AppPreferences.getPrefForceDisabledWireless(getApplicationContext())) {
 //            Log.i("AIRPLANE_MODE_ON", "TRUE");
             return;
         }
+
+        // Turn off Bluetooth if preference set true
+        if (AppPreferences.getPrefDisableBluetooth(getApplicationContext())) {
+            disableBluetooth();
+        }
+
+        // Try to connect to Wi-Fi network. If fail then disable Wi-Fi
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {
             disableNotConnectedWifi(wifiManager);
@@ -91,6 +100,13 @@ public class ConnectionService extends IntentService {
             wifiManager.setWifiEnabled(false);
         } else {
             Log.i("WIFI_SSID", wifiInfo.getSSID());
+        }
+    }
+
+    public static void disableBluetooth() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
+            bluetoothAdapter.disable();
         }
     }
 

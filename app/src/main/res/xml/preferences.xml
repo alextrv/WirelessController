@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_category_wifi_title"
-        android:key="pref_category_wifi_settings">
+        android:title="@string/pref_category_wireless_title"
+        android:key="pref_category_wireless_settings">
 
         <SwitchPreference
             android:title="@string/enable_whitelist"
@@ -17,6 +17,16 @@
         </Preference>
 
         <SwitchPreference
+            android:title="@string/disable_bluetooth"
+            android:key="prefDisableBluetooth"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_rules_title">
+
+        <SwitchPreference
             android:title="@string/disable_wireless"
             android:key="prefDisableWireless"
             android:defaultValue="false"/>
@@ -24,7 +34,6 @@
         <ListPreference
             android:title="@string/repeat"
             android:key="prefRepeatDisableWireless"
-            android:dependency="prefDisableWireless"
             android:entries="@array/pref_repeatDisableWireless_entries"
             android:entryValues="@array/pref_repeatDisableWireless_values"
             android:defaultValue="@string/pref_repeatDisableWireless_default"/>
@@ -32,24 +41,23 @@
         <org.travinskiy.alex.universalcontroller.TimePickerFragment
             android:title="@string/start_time"
             android:dialogTitle=""
-            android:dependency="prefDisableWireless"
             android:key="prefStartTime"
             android:defaultValue="23:00"/>
 
         <org.travinskiy.alex.universalcontroller.TimePickerFragment
             android:title="@string/end_time"
             android:dialogTitle=""
-            android:dependency="prefDisableWireless"
             android:key="prefEndTime"
             android:defaultValue="7:00"/>
 
     </PreferenceCategory>
+
     <PreferenceCategory
         android:title="@string/pref_category_other_title"
         android:key="pref_category_other_settings">
 
         <SwitchPreference
-            android:title="@string/start_service"
+            android:title="@string/enable_service"
             android:key="prefIsAlarmOn"
             android:defaultValue="true"/>
         <SwitchPreference

@@ -13,12 +13,13 @@ public class SettingsFragment extends PreferenceFragment {
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     if (key.equals(AppPreferences.PREF_IS_ALARM_ON)) {
                         boolean isOn = sharedPreferences.getBoolean(key, true);
-                        int intervalIndex = AppPreferences.getPrefServiceRunInterval(getActivity());
-                        ConnectionService.setServiceAlarm(getActivity(), isOn, intervalIndex);
+                        Utils.setMainService(getActivity(), isOn);
 
                     } else if (key.equals(AppPreferences.PREF_START_TIME)) {
                         Preference preference = findPreference(key);
                         preference.setSummary(sharedPreferences.getString(key, TimePickerFragment.START_TIME_DEFAULT));
+                        boolean disableWireless = AppPreferences.getPrefDisableWireless(getActivity());
+                        Utils.setForceDisableWirelessService(getActivity(), disableWireless);
 
                     } else if (key.equals(AppPreferences.PREF_END_TIME)) {
                         Preference preference = findPreference(key);
@@ -30,11 +31,15 @@ public class SettingsFragment extends PreferenceFragment {
                         } else {
                             preference.setSummary(endTime);
                         }
+                        boolean disableWireless = AppPreferences.getPrefDisableWireless(getActivity());
+                        Utils.setForceDisableWirelessService(getActivity(), disableWireless);
 
                     } else if (key.equals(AppPreferences.PREF_REPEAT_DISABLE_WIRELESS)) {
                         int value = Integer.parseInt(sharedPreferences.getString(key,
                                 getString(R.string.pref_repeatDisableWireless_default)));
                         setListPreferenceSummary(key, value, R.array.pref_repeatDisableWireless_entries);
+                        boolean disableWireless = AppPreferences.getPrefDisableWireless(getActivity());
+                        Utils.setForceDisableWirelessService(getActivity(), disableWireless);
 
                     } else if (key.equals(AppPreferences.PREF_SERVICE_RUN_INTERVAL)) {
                         int value = Integer.parseInt(sharedPreferences.getString(key,
@@ -42,6 +47,9 @@ public class SettingsFragment extends PreferenceFragment {
                         setListPreferenceSummary(key, value, R.array.pref_serviceRunInterval_entries);
                         boolean isOn = AppPreferences.getPrefIsAlarmOn(getActivity());
                         ConnectionService.setServiceAlarm(getActivity(), isOn, value);
+                    } else if (key.equals(AppPreferences.PREF_DISABLE_WIRELESS)) {
+                        boolean disableWireless = sharedPreferences.getBoolean(key, false);
+                        Utils.setForceDisableWirelessService(getActivity(), disableWireless);
                     }
                 }
             };

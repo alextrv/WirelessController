@@ -15,8 +15,10 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         boolean isOn = AppPreferences.getPrefIsAlarmOn(this);
-        int intervalIndex = AppPreferences.getPrefServiceRunInterval(this);
-        ConnectionService.setServiceAlarm(this, isOn, intervalIndex);
+        Utils.setMainService(this, isOn);
+
+        isOn = AppPreferences.getPrefDisableWireless(this);
+        Utils.setForceDisableWirelessService(this, isOn);
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(android.R.id.content);

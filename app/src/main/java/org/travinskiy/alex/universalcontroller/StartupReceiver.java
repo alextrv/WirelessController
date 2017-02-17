@@ -10,5 +10,8 @@ public class StartupReceiver extends BroadcastReceiver {
         boolean isOn = AppPreferences.getPrefIsAlarmOn(context);
         int intervalIndex = AppPreferences.getPrefServiceRunInterval(context);
         ConnectionService.setServiceAlarm(context, isOn, intervalIndex);
+
+        boolean disableWireless = AppPreferences.getPrefDisableWireless(context);
+        Utils.setForceDisableWirelessService(context, disableWireless);
     }
 }
