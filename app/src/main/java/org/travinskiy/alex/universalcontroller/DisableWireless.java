@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.util.Log;
 
 import java.util.Calendar;
 
@@ -23,6 +22,8 @@ public class DisableWireless extends IntentService {
 
     public static final String REQUEST_CODE = "requestCode";
 
+    private static final String TAG = "ForceDisableWireless";
+
     public DisableWireless() {
         super(null);
     }
@@ -34,6 +35,8 @@ public class DisableWireless extends IntentService {
     }
 
     public static void setServiceAlarm(Context context, String startTime, String endTime, boolean turnOn) {
+
+        MyLogger.writeToFile(context, TAG, Utils.SEPARATOR, "setServiceAlarm", startTime, endTime, turnOn);
 
         // Intent for start time
         Intent startTimeIntent = newIntent(context, START_TIME_CODE);
@@ -117,16 +120,16 @@ public class DisableWireless extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i("DISABLE_WIRELESS", "DISABLE_WIRELESS");
 
         int requestCode = intent.getIntExtra(REQUEST_CODE, -1);
 
-        Log.i(REQUEST_CODE, requestCode + "");
+        MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, "REQUEST_CODE", requestCode);
+
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         if (requestCode == START_TIME_CODE) {
 
             // Turn off Wi-Fi
-            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
             if (wifiManager.isWifiEnabled()) {
                 wifiManager.setWifiEnabled(false);
             }
@@ -143,5 +146,8 @@ public class DisableWireless extends IntentService {
                 Utils.setForceDisableWirelessService(getApplicationContext(), false);
             }
         }
+
+        MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR,
+                "Is Wifi enabled", wifiManager.isWifiEnabled());
     }
 }

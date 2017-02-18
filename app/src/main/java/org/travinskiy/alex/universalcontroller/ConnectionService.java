@@ -11,11 +11,12 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.provider.Settings;
-import android.util.Log;
 
 import java.util.Set;
 
 public class ConnectionService extends IntentService {
+
+    private static final String TAG = "ConnectionService";
 
     private static final long[] RUN_INTERVAL = {
             AlarmManager.INTERVAL_FIFTEEN_MINUTES,
@@ -39,6 +40,9 @@ public class ConnectionService extends IntentService {
     }
 
     public static void setServiceAlarm(Context context, boolean turnOn, int runIntervalIndex) {
+
+        MyLogger.writeToFile(context, TAG, Utils.SEPARATOR, "setServiceAlarm", turnOn, runIntervalIndex);
+
         Intent intent = newIntent(context);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
@@ -56,15 +60,18 @@ public class ConnectionService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         boolean stopInAirplaneMode = AppPreferences.getPrefStopInAirplaneMode(getApplicationContext());
-        if ((stopInAirplaneMode && isAirplaneModeOn(getApplicationContext())) ||
+        boolean isAirplaneMode = isAirplaneModeOn(getApplicationContext());
+        if ((stopInAirplaneMode && isAirplaneMode) ||
                 AppPreferences.getPrefForceDisabledWireless(getApplicationContext())) {
-//            Log.i("AIRPLANE_MODE_ON", "TRUE");
+            MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, "AIRPLANE_MODE",
+                    isAirplaneMode);
             return;
         }
 
         // Turn off Bluetooth if preference set true
         if (AppPreferences.getPrefDisableBluetooth(getApplicationContext())) {
             disableBluetooth();
+            MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, "Turning off Bluetooth");
         }
 
         // Try to connect to Wi-Fi network. If fail then disable Wi-Fi
@@ -76,6 +83,8 @@ public class ConnectionService extends IntentService {
             SystemClock.sleep(DELAY_TO_WIFI_CONNECT);
             disableNotConnectedWifi(wifiManager);
             boolean enableWhitelist = AppPreferences.getPrefEnableWhitelist(getApplicationContext());
+            MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, "White list enabled",
+                    enableWhitelist);
             if (wifiManager.isWifiEnabled() && enableWhitelist) {
                 Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(getApplicationContext());
                 if (wifiWhitelist != null && !wifiWhitelist.isEmpty()) {
@@ -83,7 +92,8 @@ public class ConnectionService extends IntentService {
                     String BSSID = wifiInfo.getBSSID();
                     String SSID = wifiInfo.getSSID();
                     String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);
-//                    Log.i("SSID_BSSID", SSID_BSSID);
+                    MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, "SSID_BSSID",
+                            SSID_BSSID);
                     if (BSSID == null || !wifiWhitelist.contains(SSID_BSSID)) {
                         wifiManager.setWifiEnabled(false);
                     }
@@ -92,6 +102,8 @@ public class ConnectionService extends IntentService {
                 }
             }
         }
+        MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR,
+                "Is Wifi enabled", wifiManager.isWifiEnabled());
     }
 
     private void disableNotConnectedWifi(WifiManager wifiManager) {
@@ -99,7 +111,7 @@ public class ConnectionService extends IntentService {
         if (wifiInfo.getBSSID() == null) {
             wifiManager.setWifiEnabled(false);
         } else {
-            Log.i("WIFI_SSID", wifiInfo.getSSID());
+            MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, wifiInfo.getSSID());
         }
     }
 

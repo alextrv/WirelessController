@@ -4,6 +4,8 @@ import android.content.Context;
 
 public class Utils {
 
+    public static final String SEPARATOR = ": ";
+
     public static void setMainService(Context context, boolean isOn) {
         int intervalIndex = AppPreferences.getPrefServiceRunInterval(context);
         ConnectionService.setServiceAlarm(context, isOn, intervalIndex);
