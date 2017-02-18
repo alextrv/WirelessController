@@ -82,7 +82,7 @@ public class AppPreferences {
 
     public static String getPrefEndTime(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(PREF_END_TIME, TimePickerFragment.START_TIME_DEFAULT);
+                .getString(PREF_END_TIME, TimePickerFragment.END_TIME_DEFAULT);
     }
 
     public static void setPrefEndTime(Context context, String value) {
