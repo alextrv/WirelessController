@@ -1,4 +1,4 @@
-package org.travinskiy.alex.universalcontroller;
+package org.alex.wirelesscontroller;
 
 import android.app.AlarmManager;
 import android.app.IntentService;

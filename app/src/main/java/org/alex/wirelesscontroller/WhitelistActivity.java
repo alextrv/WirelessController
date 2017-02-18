@@ -1,4 +1,4 @@
-package org.travinskiy.alex.universalcontroller;
+package org.alex.wirelesscontroller;
 
 import android.content.Context;
 import android.content.Intent;
