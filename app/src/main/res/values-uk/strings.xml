@@ -55,4 +55,8 @@
     <string name="pref_category_rules_title">Правила</string>
     <string name="disable_bluetooth">Вимикати Bluetooth</string>
 
+    <string name="send_log_via_email">Надіслати логи через E-Mail</string>
+    <string name="cannot_find_email_app">Не можу знайти програму для відправки E-Mail</string>
+    <string name="cannot_find_log_file">Не можу знайти лог файл</string>
+
 </resources>

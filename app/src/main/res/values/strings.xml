@@ -55,4 +55,8 @@
     <string name="pref_category_rules_title">Automatic rules</string>
     <string name="disable_bluetooth">Disable Bluetooth</string>
 
+    <string name="send_log_via_email">Send log via E-Mail</string>
+    <string name="cannot_find_email_app">Can\'t find E-Mail app</string>
+    <string name="cannot_find_log_file">Can\'t find log file</string>
+
 </resources>
