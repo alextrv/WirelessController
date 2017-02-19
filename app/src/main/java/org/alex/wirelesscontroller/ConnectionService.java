@@ -108,7 +108,7 @@ public class ConnectionService extends IntentService {
 
     private void disableNotConnectedWifi(WifiManager wifiManager) {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        if (wifiInfo.getBSSID() == null) {
+        if (wifiInfo.getBSSID() == null || wifiInfo.getNetworkId() == -1) {
             wifiManager.setWifiEnabled(false);
         } else {
             MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, wifiInfo.getSSID());

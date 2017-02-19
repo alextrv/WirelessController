@@ -31,6 +31,8 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
     private DividerItemDecoration mDividerItemDecoration;
     private LinearLayoutManager mLayoutManager;
 
+    private static final String ZERO_MAC = "00:00:00:00:00:00";
+
     public static Intent newIntent(Context context) {
         return new Intent(context, WhitelistActivity.class);
     }
@@ -74,7 +76,8 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if (wifiInfo.getBSSID() != null) {
+            if (wifiInfo.getBSSID() != null && wifiInfo.getNetworkId() != -1 &&
+                    !wifiInfo.getBSSID().equals(ZERO_MAC)) {
                 Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(getApplicationContext());
                 if (wifiWhitelist == null) {
                     wifiWhitelist = new HashSet<>();
