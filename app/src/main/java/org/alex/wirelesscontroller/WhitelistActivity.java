@@ -79,9 +79,6 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
             if (wifiInfo.getBSSID() != null && wifiInfo.getNetworkId() != -1 &&
                     !wifiInfo.getBSSID().equals(ZERO_MAC)) {
                 Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(getApplicationContext());
-                if (wifiWhitelist == null) {
-                    wifiWhitelist = new HashSet<>();
-                }
                 String SSID = wifiInfo.getSSID();
                 String BSSID = wifiInfo.getBSSID();
                 String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);

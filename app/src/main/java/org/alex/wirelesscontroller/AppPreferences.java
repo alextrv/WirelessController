@@ -33,8 +33,17 @@ public class AppPreferences {
     }
 
     public static Set<String> getPrefWifiWhitelist(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+        Set<String> whitelist = PreferenceManager.getDefaultSharedPreferences(context)
                 .getStringSet(PREF_WIFI_WHITELIST, new HashSet<String>());
+
+        // Using deepSetCopy to get new HashSet object
+        // because there are some issues with object returned
+        // from getStringSet method
+
+        if (whitelist.size() > 0) {
+            return Utils.deepSetCopy(whitelist);
+        }
+        return new HashSet<>();
     }
 
     public static void setPrefWifiWhitelist(Context context, Set<String> values) {
