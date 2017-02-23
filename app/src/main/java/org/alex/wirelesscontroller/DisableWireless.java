@@ -36,7 +36,7 @@ public class DisableWireless extends IntentService {
 
     public static void setServiceAlarm(Context context, String startTime, String endTime, boolean turnOn) {
 
-        MyLogger.writeToFile(context, TAG, Utils.SEPARATOR, "setServiceAlarm", startTime, endTime, turnOn);
+        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "setServiceAlarm", startTime, endTime, turnOn);
 
         // Intent for start time
         Intent startTimeIntent = newIntent(context, START_TIME_CODE);
@@ -121,9 +121,11 @@ public class DisableWireless extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        Context context = getApplicationContext();
+
         int requestCode = intent.getIntExtra(REQUEST_CODE, -1);
 
-        MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR, "REQUEST_CODE", requestCode);
+        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "REQUEST_CODE", requestCode);
 
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
@@ -147,7 +149,7 @@ public class DisableWireless extends IntentService {
             }
         }
 
-        MyLogger.writeToFile(getApplicationContext(), TAG, Utils.SEPARATOR,
+        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR,
                 "Is Wifi enabled", wifiManager.isWifiEnabled());
     }
 }

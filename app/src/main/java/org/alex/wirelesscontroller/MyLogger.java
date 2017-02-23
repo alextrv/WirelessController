@@ -19,21 +19,40 @@ public class MyLogger {
     private static SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",
             Locale.getDefault());
 
-    private MyLogger(){
+    private static MyLogger sMyLogger;
+
+    private Context mContext;
+    private String mLogFilePath;
+
+    public static MyLogger getInstance(Context context) {
+        if (sMyLogger == null) {
+            sMyLogger = new MyLogger(context);
+        }
+        return sMyLogger;
     }
 
-    public static void writeToFile(String filename, String tag, String separator, Object... args) {
+    private MyLogger(Context context) {
+        mContext = context.getApplicationContext();
+        mLogFilePath = generateFilePath();
+    }
 
-        if (filename == null) {
+    public void writeToFile(String tag, String separator, Object... args) {
+
+        if (!AppPreferences.getPrefEnableLogging(mContext)) {
+            Log.i(MY_LOGGER, "Logging is disabled");
+            return;
+        }
+
+        if (mLogFilePath == null) {
             Log.i(MY_LOGGER, "No filename to write log");
             return;
         }
 
-        FileWriter out = null;
+        FileWriter out;
         PrintWriter printWriter = null;
 
         try {
-            out = new FileWriter(filename, true);
+            out = new FileWriter(mLogFilePath, true);
             printWriter = new PrintWriter(out);
             int count = args.length;
             if (count > 0) {
@@ -41,8 +60,10 @@ public class MyLogger {
                 printWriter.print(" ");
                 printWriter.print(tag);
                 for (Object value : args) {
-                    printWriter.print(separator);
-                    printWriter.print(value.toString());
+                    if (value != null) {
+                        printWriter.print(separator);
+                        printWriter.print(value.toString());
+                    }
                 }
             }
             printWriter.println();
@@ -57,25 +78,23 @@ public class MyLogger {
 
     }
 
-    public static void writeToFile(Context context, String tag, String separator, Object... args) {
-        writeToFile(getLoggerFilePath(context), tag, separator, args);
-    }
-
-    public static String getLoggerFilePath(Context context) {
-        File cacheDir = context.getExternalCacheDir();
+    private String generateFilePath() {
+        File cacheDir = mContext.getExternalCacheDir();
         if (cacheDir != null) {
             return new File(cacheDir, LOGGER_FILENAME).getAbsolutePath();
         }
         return null;
     }
 
-    public static boolean isLogFileExists(Context context) {
-        String filePath = getLoggerFilePath(context);
-        if (filePath == null) {
+    public boolean isLogFileExists() {
+        if (mLogFilePath == null) {
             return false;
         }
-        File file = new File(filePath);
+        File file = new File(mLogFilePath);
         return file.exists();
     }
 
+    public String getLogFilePath() {
+        return mLogFilePath;
+    }
 }

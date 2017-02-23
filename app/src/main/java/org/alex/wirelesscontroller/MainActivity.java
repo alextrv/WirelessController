@@ -46,17 +46,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_menu, menu);
-        return true;
+        boolean isLoggingEnabled = AppPreferences.getPrefEnableLogging(this);
+        if (isLoggingEnabled) {
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.main_menu, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_send_log:
-                if (MyLogger.isLogFileExists(this)) {
-                    String logFile = MyLogger.getLoggerFilePath(this);
+                if (MyLogger.getInstance(this).isLogFileExists()) {
+                    String logFile = MyLogger.getInstance(this).getLogFilePath();
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.setType(PLAIN_TEXT_TYPE);
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{ DEVELOPER_EMAIL });

@@ -11,7 +11,7 @@ public class StartupReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        MyLogger.writeToFile(context, TAG, Utils.SEPARATOR, "BOOT_COMPLETED");
+        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "BOOT_COMPLETED");
 
         boolean isOn = AppPreferences.getPrefIsAlarmOn(context);
         int intervalIndex = AppPreferences.getPrefServiceRunInterval(context);

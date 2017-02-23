@@ -19,7 +19,9 @@ public class AppPreferences {
     public static final String PREF_FORCE_DISABLED_WIRELESS = "prefForceDisabledWireless";
     public static final String PREF_DISABLE_WIRELESS = "prefDisableWireless";
     public static final String PREF_DISABLE_BLUETOOTH = "prefDisableBluetooth";
+    public static final String PREF_ENABLE_LOGGING = "prefEnableLogging";
 
+    /* Getter and Setter for PREF_STOP_IN_AIRPLANE_MODE */
     public static boolean getPrefStopInAirplaneMode(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_STOP_IN_AIRPLANE_MODE, true);
@@ -32,6 +34,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_WIFI_WHITELIST */
     public static Set<String> getPrefWifiWhitelist(Context context) {
         Set<String> whitelist = PreferenceManager.getDefaultSharedPreferences(context)
                 .getStringSet(PREF_WIFI_WHITELIST, new HashSet<String>());
@@ -53,6 +56,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_ENABLE_WHITELIST */
     public static boolean getPrefEnableWhitelist(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_ENABLE_WHITELIST, false);
@@ -65,6 +69,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_IS_ALARM_ON */
     public static boolean getPrefIsAlarmOn(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_IS_ALARM_ON, false);
@@ -77,6 +82,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_START_TIME */
     public static String getPrefStartTime(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_START_TIME, TimePickerFragment.START_TIME_DEFAULT);
@@ -89,6 +95,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_END_TIME */
     public static String getPrefEndTime(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_END_TIME, TimePickerFragment.END_TIME_DEFAULT);
@@ -101,6 +108,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_REPEAT_DISABLE_WIRELESS */
     public static int getPrefRepeatDisableWireless(Context context) {
         String value = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_REPEAT_DISABLE_WIRELESS, context.getString(R.string.pref_repeatDisableWireless_default));
@@ -114,12 +122,14 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter for PREF_SERVICE_RUN_INTERVAL */
     public static int getPrefServiceRunInterval(Context context) {
         String value = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_SERVICE_RUN_INTERVAL, context.getString(R.string.pref_serviceRunInterval_default));
         return Integer.parseInt(value);
     }
 
+    /* Getter and Setter for PREF_FORCE_DISABLED_WIRELESS */
     public static boolean getPrefForceDisabledWireless(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_FORCE_DISABLED_WIRELESS, false);
@@ -132,6 +142,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_DISABLE_WIRELESS */
     public static boolean getPrefDisableWireless(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_DISABLE_WIRELESS, false);
@@ -144,6 +155,7 @@ public class AppPreferences {
                 .apply();
     }
 
+    /* Getter and Setter for PREF_DISABLE_BLUETOOTH */
     public static boolean getPrefDisableBluetooth(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_DISABLE_BLUETOOTH, true);
@@ -153,6 +165,19 @@ public class AppPreferences {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_DISABLE_BLUETOOTH, value)
+                .apply();
+    }
+
+    /* Getter and Setter for PREF_ENABLE_LOGGING */
+    public static boolean getPrefEnableLogging(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_ENABLE_LOGGING, false);
+    }
+
+    public static void setPrefEnableLogging(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_ENABLE_LOGGING, value)
                 .apply();
     }
 

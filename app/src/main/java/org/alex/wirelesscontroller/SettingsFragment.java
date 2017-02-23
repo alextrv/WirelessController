@@ -50,6 +50,8 @@ public class SettingsFragment extends PreferenceFragment {
                     } else if (key.equals(AppPreferences.PREF_DISABLE_WIRELESS)) {
                         boolean disableWireless = sharedPreferences.getBoolean(key, false);
                         Utils.setForceDisableWirelessService(getActivity(), disableWireless);
+                    } else if (key.equals(AppPreferences.PREF_ENABLE_LOGGING)) {
+                        getActivity().invalidateOptionsMenu();
                     }
                 }
             };
