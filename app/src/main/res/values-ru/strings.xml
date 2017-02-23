@@ -59,4 +59,6 @@
     <string name="cannot_find_email_app">Не могу найти приложение для отправки E-Mail</string>
     <string name="cannot_find_log_file">Не могу найти лог файл</string>
 
+    <string name="enable_logging">Включить логирование</string>
+
 </resources>

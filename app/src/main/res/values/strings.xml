@@ -59,4 +59,6 @@
     <string name="cannot_find_email_app">Can\'t find E-Mail app</string>
     <string name="cannot_find_log_file">Can\'t find log file</string>
 
+    <string name="enable_logging">Enable logging</string>
+
 </resources>
