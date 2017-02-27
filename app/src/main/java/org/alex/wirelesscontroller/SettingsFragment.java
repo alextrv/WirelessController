@@ -11,9 +11,9 @@ public class SettingsFragment extends PreferenceFragment {
             new SharedPreferences.OnSharedPreferenceChangeListener() {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    if (key.equals(AppPreferences.PREF_IS_ALARM_ON)) {
+                    if (key.equals(AppPreferences.PREF_IS_AUTO_ENABLE_WIFI_ON)) {
                         boolean isOn = sharedPreferences.getBoolean(key, true);
-                        Utils.setMainService(getActivity(), isOn);
+                        Utils.setAutoEnableWifiService(getActivity(), isOn);
 
                     } else if (key.equals(AppPreferences.PREF_START_TIME)) {
                         Preference preference = findPreference(key);
@@ -45,8 +45,8 @@ public class SettingsFragment extends PreferenceFragment {
                         int value = Integer.parseInt(sharedPreferences.getString(key,
                                 getString(R.string.pref_serviceRunInterval_default)));
                         setListPreferenceSummary(key, value, R.array.pref_serviceRunInterval_entries);
-                        boolean isOn = AppPreferences.getPrefIsAlarmOn(getActivity());
-                        ConnectionService.setServiceAlarm(getActivity(), isOn, value);
+                        boolean isOn = AppPreferences.getPrefIsAutoEnableWifiOn(getActivity());
+                        Utils.setAutoEnableWifiService(getActivity(), isOn);
                     } else if (key.equals(AppPreferences.PREF_DISABLE_WIRELESS)) {
                         boolean disableWireless = sharedPreferences.getBoolean(key, false);
                         Utils.setForceDisableWirelessService(getActivity(), disableWireless);

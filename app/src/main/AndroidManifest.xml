@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -21,16 +22,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name=".ConnectionService"/>
-        <service android:name=".DisableWireless"/>
+        <service android:name=".services.ConnectionService"/>
+        <service android:name=".services.AutoDisableRulesService"/>
         <activity android:name=".WhitelistActivity"
                   android:parentActivityName=".MainActivity"
                   android:label="@string/wifi_whitelist_name"/>
-        <receiver android:name=".StartupReceiver">
+        <receiver android:name=".receivers.StartupReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <receiver android:name=".receivers.ScheduleWakefulReceiver"/>
     </application>
 
 </manifest>

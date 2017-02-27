@@ -11,12 +11,12 @@ public class AppPreferences {
     public static final String PREF_STOP_IN_AIRPLANE_MODE = "prefStopInAirplaneMode";
     public static final String PREF_WIFI_WHITELIST = "prefWifiWhitelist";
     public static final String PREF_ENABLE_WHITELIST = "prefEnableWhitelist";
-    public static final String PREF_IS_ALARM_ON = "prefIsAlarmOn";
+    public static final String PREF_IS_AUTO_ENABLE_WIFI_ON = "prefIsAutoEnableWifiOn";
     public static final String PREF_START_TIME = "prefStartTime";
     public static final String PREF_END_TIME = "prefEndTime";
     public static final String PREF_REPEAT_DISABLE_WIRELESS = "prefRepeatDisableWireless";
     public static final String PREF_SERVICE_RUN_INTERVAL = "prefServiceRunInterval";
-    public static final String PREF_FORCE_DISABLED_WIRELESS = "prefForceDisabledWireless";
+    public static final String PREF_SUSPEND_AUTO_ENABLE_WIFI = "prefSuspendAutoEnableWifi";
     public static final String PREF_DISABLE_WIRELESS = "prefDisableWireless";
     public static final String PREF_DISABLE_BLUETOOTH = "prefDisableBluetooth";
     public static final String PREF_ENABLE_LOGGING = "prefEnableLogging";
@@ -69,16 +69,16 @@ public class AppPreferences {
                 .apply();
     }
 
-    /* Getter and Setter for PREF_IS_ALARM_ON */
-    public static boolean getPrefIsAlarmOn(Context context) {
+    /* Getter and Setter for PREF_IS_AUTO_ENABLE_WIFI_ON */
+    public static boolean getPrefIsAutoEnableWifiOn(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(PREF_IS_ALARM_ON, false);
+                .getBoolean(PREF_IS_AUTO_ENABLE_WIFI_ON, false);
     }
 
-    public static void setPrefIsAlarmOn(Context context, boolean isOn) {
+    public static void setPrefIsAutoEnableWifiOn(Context context, boolean isOn) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putBoolean(PREF_IS_ALARM_ON, isOn)
+                .putBoolean(PREF_IS_AUTO_ENABLE_WIFI_ON, isOn)
                 .apply();
     }
 
@@ -129,16 +129,16 @@ public class AppPreferences {
         return Integer.parseInt(value);
     }
 
-    /* Getter and Setter for PREF_FORCE_DISABLED_WIRELESS */
-    public static boolean getPrefForceDisabledWireless(Context context) {
+    /* Getter and Setter for PREF_SUSPEND_AUTO_ENABLE_WIFI */
+    public static boolean getPrefSuspendAutoEnableWifi(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(PREF_FORCE_DISABLED_WIRELESS, false);
+                .getBoolean(PREF_SUSPEND_AUTO_ENABLE_WIFI, false);
     }
 
-    public static void setPrefForceDisabledWireless(Context context, boolean value) {
+    public static void setPrefSuspendAutoEnableWifi(Context context, boolean value) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putBoolean(PREF_FORCE_DISABLED_WIRELESS, value)
+                .putBoolean(PREF_SUSPEND_AUTO_ENABLE_WIFI, value)
                 .apply();
     }
 

@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
+
 import java.io.File;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String PLAIN_TEXT_TYPE = "text/plain";
     private static final String EMAIL_SUBJECT = "Wireless Controller log file";
-    private static final String DEVELOPER_EMAIL = "alex.trv92@gmail.com";
+    private static final String DEVELOPER_EMAIL = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +30,24 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        boolean isOn = AppPreferences.getPrefIsAlarmOn(this);
-        Utils.setMainService(this, isOn);
+        boolean isPrefOn = AppPreferences.getPrefIsAutoEnableWifiOn(this);
+        if (isPrefOn != ScheduleWakefulReceiver.isBroadcastOn(this, Utils.CONNECTION_SERVICE_CODE)) {
+            if (isPrefOn) {
+                // Send broadcast immediately to start service
+                sendBroadcast(ScheduleWakefulReceiver.newIntent(this, Utils.CONNECTION_SERVICE_CODE));
+            } else {
+                Utils.setAutoEnableWifiService(this, false);
+            }
+        }
 
-        isOn = AppPreferences.getPrefDisableWireless(this);
-        Utils.setForceDisableWirelessService(this, isOn);
+        isPrefOn = AppPreferences.getPrefDisableWireless(this);
+        if (isPrefOn && !ScheduleWakefulReceiver.isBroadcastOn(this, Utils.START_TIME_CODE) &&
+                !ScheduleWakefulReceiver.isBroadcastOn(this, Utils.END_TIME_CODE)) {
+            Utils.setForceDisableWirelessService(this, true);
+        } else if (!isPrefOn && (ScheduleWakefulReceiver.isBroadcastOn(this, Utils.START_TIME_CODE) ||
+                ScheduleWakefulReceiver.isBroadcastOn(this, Utils.END_TIME_CODE))) {
+            Utils.setForceDisableWirelessService(this, false);
+        }
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(android.R.id.content);

@@ -133,7 +133,7 @@ public class TimePickerFragment extends DialogPreference {
         int startMinute = getMinute(startTime);
         int endHour = getHourOfDay(endTime);
         int endMinute = getMinute(endTime);
-        return (startHour > endHour) || (startHour == endHour && startMinute > endMinute);
+        return (startHour > endHour) || (startHour == endHour && startMinute >= endMinute);
     }
 
     private static class SavedState extends Preference.BaseSavedState {

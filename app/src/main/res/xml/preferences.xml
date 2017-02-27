@@ -58,16 +58,16 @@
 
         <SwitchPreference
             android:title="@string/enable_service"
-            android:key="prefIsAlarmOn"
+            android:key="prefIsAutoEnableWifiOn"
             android:defaultValue="true"/>
         <SwitchPreference
             android:title="@string/stop_service_in_airplane_mode"
             android:key="prefStopInAirplaneMode"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
         <ListPreference
             android:title="@string/service_interval"
             android:key="prefServiceRunInterval"
-            android:dependency="prefIsAlarmOn"
+            android:dependency="prefIsAutoEnableWifiOn"
             android:entries="@array/pref_serviceRunInterval_entries"
             android:entryValues="@array/pref_serviceRunInterval_values"
             android:defaultValue="@string/pref_serviceRunInterval_default"/>

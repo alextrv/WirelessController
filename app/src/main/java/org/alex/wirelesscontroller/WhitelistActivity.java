@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.alex.wirelesscontroller.services.ConnectionService;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,8 +32,6 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
     private ListAdapter mAdapter;
     private DividerItemDecoration mDividerItemDecoration;
     private LinearLayoutManager mLayoutManager;
-
-    private static final String ZERO_MAC = "00:00:00:00:00:00";
 
     public static Intent newIntent(Context context) {
         return new Intent(context, WhitelistActivity.class);
@@ -76,8 +76,7 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if (wifiInfo.getBSSID() != null && wifiInfo.getNetworkId() != -1 &&
-                    !wifiInfo.getBSSID().equals(ZERO_MAC)) {
+            if (ConnectionService.isWifiConnected(wifiInfo)) {
                 Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(getApplicationContext());
                 String SSID = wifiInfo.getSSID();
                 String BSSID = wifiInfo.getBSSID();
