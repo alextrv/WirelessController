@@ -4,8 +4,8 @@
     <string name="stop_service_in_airplane_mode">Призупинити сервіс в режимі авіапольоту</string>
     <string name="enable_whitelist">Використовувати білий список</string>
     <string name="add_current_wifi_to_whitelist">Додати поточну Wi-Fi мережу</string>
-    <string name="enable_wifi">Будь ласка увімкніть Wi-Fi і з\'єднайтеся з потрібною мережею</string>
-    <string name="connect_to_wifi">Будь ласка з\'єднайтеся з Wi-Fi мережею</string>
+    <string name="enable_wifi">Будь ласка, увімкніть Wi-Fi і з\'єднайтеся з потрібною мережею</string>
+    <string name="connect_to_wifi">Будь ласка, з\'єднайтеся з Wi-Fi мережею</string>
     <string name="already_in_whitelist">Поточна Wi-Fi мережа вже є у білому списку</string>
     <string name="added_to_whitelist">Wi-Fi мережа додана у білий список</string>
     <string name="ssid_bssid">%1$s (%2$s)</string>
@@ -60,5 +60,8 @@
     <string name="cannot_find_log_file">Не можу знайти лог файл</string>
 
     <string name="enable_logging">Увімкнути логування</string>
+
+    <string name="pref_enableService_summary">Вмикати періодично Wi-Fi для перевірки доступних мереж.
+    Якщо немає відомих мереж - вимикати, для збереження енергії.</string>
 
 </resources>

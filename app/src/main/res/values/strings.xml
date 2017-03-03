@@ -61,4 +61,7 @@
 
     <string name="enable_logging">Enable logging</string>
 
+    <string name="pref_enableService_summary">Turn on Wi-Fi periodically for checking available networks.
+    If any saved networks unavailable then turn off Wi-Fi for power saving</string>
+
 </resources>

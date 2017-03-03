@@ -58,6 +58,7 @@
 
         <SwitchPreference
             android:title="@string/enable_service"
+            android:summary="@string/pref_enableService_summary"
             android:key="prefIsAutoEnableWifiOn"
             android:defaultValue="true"/>
         <SwitchPreference
