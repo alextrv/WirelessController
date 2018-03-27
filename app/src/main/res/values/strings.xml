@@ -23,7 +23,7 @@
     <string name="end_time_next_day">Next day at %1$s</string>
 
     <string-array name="pref_repeatDisableWireless_entries">
-        <item>One time</item>
+        <item>Once</item>
         <item>Every day</item>
     </string-array>
 

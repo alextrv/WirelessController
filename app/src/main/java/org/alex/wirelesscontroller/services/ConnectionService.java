@@ -16,6 +16,8 @@ import org.alex.wirelesscontroller.R;
 import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
 import org.alex.wirelesscontroller.Utils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 public class ConnectionService extends IntentService {
@@ -58,31 +60,33 @@ public class ConnectionService extends IntentService {
 
         // Try to connect to Wi-Fi network. If fail then disable Wi-Fi
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager.isWifiEnabled()) {
-            disableNotConnectedWifi(wifiManager);
-        } else {
-            wifiManager.setWifiEnabled(true);
-            SystemClock.sleep(Utils.DELAY_TO_WIFI_CONNECT);
-            disableNotConnectedWifi(wifiManager);
-            boolean enableWhitelist = AppPreferences.getPrefEnableWhitelist(context);
+        if (isWifiHotspotEnabled(wifiManager)) {
+            if (wifiManager.isWifiEnabled()) {
+                disableNotConnectedWifi(wifiManager);
+            } else {
+                wifiManager.setWifiEnabled(true);
+                SystemClock.sleep(Utils.DELAY_TO_WIFI_CONNECT);
+                disableNotConnectedWifi(wifiManager);
+                boolean enableWhitelist = AppPreferences.getPrefEnableWhitelist(context);
 
-            MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "White list enabled",
-                    enableWhitelist);
+                MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "White list enabled",
+                        enableWhitelist);
 
-            if (wifiManager.isWifiEnabled() && enableWhitelist) {
-                Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(context);
-                if (wifiWhitelist != null && !wifiWhitelist.isEmpty()) {
-                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-                    String BSSID = wifiInfo.getBSSID();
-                    String SSID = wifiInfo.getSSID();
-                    String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);
-                    MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "SSID_BSSID",
-                            SSID_BSSID);
-                    if (BSSID == null || !wifiWhitelist.contains(SSID_BSSID)) {
+                if (wifiManager.isWifiEnabled() && enableWhitelist) {
+                    Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(context);
+                    if (wifiWhitelist != null && !wifiWhitelist.isEmpty()) {
+                        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                        String BSSID = wifiInfo.getBSSID();
+                        String SSID = wifiInfo.getSSID();
+                        String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);
+                        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "SSID_BSSID",
+                                SSID_BSSID);
+                        if (BSSID == null || !wifiWhitelist.contains(SSID_BSSID)) {
+                            wifiManager.setWifiEnabled(false);
+                        }
+                    } else {
                         wifiManager.setWifiEnabled(false);
                     }
-                } else {
-                    wifiManager.setWifiEnabled(false);
                 }
             }
         }
@@ -124,6 +128,21 @@ public class ConnectionService extends IntentService {
     public static boolean isWifiConnected(WifiInfo wifiInfo) {
         return wifiInfo.getBSSID() != null && wifiInfo.getNetworkId() != -1 &&
                 !wifiInfo.getBSSID().equals(Utils.ZERO_MAC);
+    }
+
+    public static boolean isWifiHotspotEnabled(WifiManager wifiManager) {
+        try {
+            Method method = wifiManager.getClass().getDeclaredMethod("isWifiApEnabled");
+            method.setAccessible(true);
+            return (Boolean) method.invoke(wifiManager);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
