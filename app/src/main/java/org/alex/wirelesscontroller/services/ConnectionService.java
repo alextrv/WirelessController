@@ -60,7 +60,7 @@ public class ConnectionService extends IntentService {
 
         // Try to connect to Wi-Fi network. If fail then disable Wi-Fi
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if (isWifiHotspotEnabled(wifiManager)) {
+        if (!isWifiHotspotEnabled(wifiManager)) {
             if (wifiManager.isWifiEnabled()) {
                 disableNotConnectedWifi(wifiManager);
             } else {
