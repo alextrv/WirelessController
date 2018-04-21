@@ -73,6 +73,11 @@
             android:entryValues="@array/pref_serviceRunInterval_values"
             android:defaultValue="@string/pref_serviceRunInterval_default"/>
         <SwitchPreference
+            android:title="@string/location"
+            android:summary="@string/pref_LocationNotification_summary"
+            android:key="prefLocationNotification"
+            android:defaultValue="false"/>
+        <SwitchPreference
             android:title="@string/enable_logging"
             android:key="prefEnableLogging"
             android:defaultValue="false"/>

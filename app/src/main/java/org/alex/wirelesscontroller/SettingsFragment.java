@@ -1,9 +1,13 @@
 package org.alex.wirelesscontroller;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+
+import org.alex.wirelesscontroller.receivers.LocationReceiver;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -52,6 +56,14 @@ public class SettingsFragment extends PreferenceFragment {
                         Utils.setForceDisableWirelessService(getActivity(), disableWireless);
                     } else if (key.equals(AppPreferences.PREF_ENABLE_LOGGING)) {
                         getActivity().invalidateOptionsMenu();
+                    } else if (key.equals(AppPreferences.PREF_LOCATION_NOTIFICATION)) {
+                        if (sharedPreferences.getBoolean(key, false)) {
+                            LocationReceiver.manageLocation(getActivity());
+                        } else {
+                            NotificationManager nManager =
+                                    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                            nManager.cancel(LocationReceiver.NOTIFICATION_ID);
+                        }
                     }
                 }
             };

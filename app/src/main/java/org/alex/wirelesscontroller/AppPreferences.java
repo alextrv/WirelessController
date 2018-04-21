@@ -20,6 +20,7 @@ public class AppPreferences {
     public static final String PREF_DISABLE_WIRELESS = "prefDisableWireless";
     public static final String PREF_DISABLE_BLUETOOTH = "prefDisableBluetooth";
     public static final String PREF_ENABLE_LOGGING = "prefEnableLogging";
+    public static final String PREF_LOCATION_NOTIFICATION = "prefLocationNotification";
 
     /* Getter and Setter for PREF_STOP_IN_AIRPLANE_MODE */
     public static boolean getPrefStopInAirplaneMode(Context context) {
@@ -178,6 +179,19 @@ public class AppPreferences {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_ENABLE_LOGGING, value)
+                .apply();
+    }
+
+    /* Getter and Setter for PREF_LOCATION_NOTIFICATION */
+    public static boolean getPrefLocationNotification(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_LOCATION_NOTIFICATION, false);
+    }
+
+    public static void setPrefLocationNotification(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_LOCATION_NOTIFICATION, value)
                 .apply();
     }
 

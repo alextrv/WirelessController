@@ -64,4 +64,11 @@
     <string name="pref_enableService_summary">Вмикати періодично Wi-Fi для перевірки доступних мереж.
     Якщо немає відомих мереж - вимикати, для збереження енергії.</string>
 
+    <string name="location_notification_title">Місцезнаходження увімкнено</string>
+    <string name="location_notification_content">Якщо ви не використовуєте зараз GPS,
+        вам слід його вимкнути для економії заряду батареї</string>
+
+    <string name="location">Місцезнаходження</string>
+    <string name="pref_LocationNotification_summary">Показувати сповіщення, коли Місцезнаходження увімкнено</string>
+
 </resources>

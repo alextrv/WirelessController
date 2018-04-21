@@ -33,6 +33,11 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".receivers.ScheduleWakefulReceiver"/>
+        <receiver android:name=".receivers.LocationReceiver">
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

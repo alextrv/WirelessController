@@ -64,4 +64,11 @@
     <string name="pref_enableService_summary">Включать периодически Wi-Fi для проверки доступных сетей.
     Если нет сохранённых сетей - выключать, для сохранения энергии.</string>
 
+    <string name="location_notification_title">Местоположение включено</string>
+    <string name="location_notification_content">Если вы не используете сейчас GPS,
+        вам следует отключить его для экономии заряда батареи</string>
+
+    <string name="location">Местоположение</string>
+    <string name="pref_LocationNotification_summary">Показывать уведомление, когда Местоположение включено</string>
+
 </resources>
