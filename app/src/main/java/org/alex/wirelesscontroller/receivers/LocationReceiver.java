@@ -29,19 +29,20 @@ public class LocationReceiver extends BroadcastReceiver {
     }
 
     public static void manageLocation(Context context) {
+        Context appContext = context.getApplicationContext();
         LocationManager locationManager =
-                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
         NotificationManager nManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, locationIntent, 0);
-            Notification notification = new NotificationCompat.Builder(context)
+            PendingIntent pendingIntent = PendingIntent.getActivity(appContext, 0, locationIntent, 0);
+            Notification notification = new NotificationCompat.Builder(appContext)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
-                    .setContentTitle(context.getString(R.string.location_notification_title))
-                    .setContentText(context.getString(R.string.location_notification_content))
+                    .setContentTitle(appContext.getString(R.string.location_notification_title))
+                    .setContentText(appContext.getString(R.string.location_notification_content))
                     .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(context.getString(R.string.location_notification_content)))
+                            .bigText(appContext.getString(R.string.location_notification_content)))
                     .setContentIntent(pendingIntent)
                     .setOngoing(true)
                     .setAutoCancel(false)

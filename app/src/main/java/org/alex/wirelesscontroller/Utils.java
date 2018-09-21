@@ -5,13 +5,17 @@ import android.content.Context;
 
 import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Utils {
 
-    public static final String SEPARATOR = ": ";
+    public static final String LOGGER_FILENAME = "wirelessController.log";
 
     public static final int ONE_TIME = 0;
     public static final int EVERY_DAY = 1;
@@ -35,6 +39,8 @@ public class Utils {
 
     public static final String REQUEST_CODE = "requestCode";
 
+    private static FileHandler sFileHandler = null;
+
     public static void setAutoEnableWifiService(Context context, boolean isOn) {
         int intervalIndex = AppPreferences.getPrefServiceRunInterval(context);
         ScheduleWakefulReceiver.setAutoEnableWifiBroadcast(context, isOn, intervalIndex);
@@ -46,14 +52,6 @@ public class Utils {
         ScheduleWakefulReceiver.setAutoDisableRulesBroadcast(context, startTime, endTime, isOn);
     }
 
-    public static Set<String> deepSetCopy(Set<String> original) {
-        Set<String> copy = new HashSet<>(original.size());
-        for (String element : original) {
-            copy.add(element);
-        }
-        return copy;
-    }
-
     public static Calendar getTimeCalendar(String time, long appendTimeMillis) {
         Calendar calendar = Calendar.getInstance();
         int hour = TimePickerFragment.getHourOfDay(time);
@@ -63,6 +61,38 @@ public class Utils {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         return calendar;
+    }
+
+    public static String getLogFilePath(Context context) {
+        File cacheDir = context.getExternalCacheDir();
+        return new File(cacheDir, LOGGER_FILENAME).getAbsolutePath();
+    }
+
+    public static Logger getLogger(Context context, String name) {
+        Logger logger = Logger.getLogger(name);
+        try {
+            String filePath = getLogFilePath(context);
+            if (sFileHandler == null) {
+                sFileHandler = new FileHandler(filePath, true);
+                sFileHandler.setFormatter(new SimpleFormatter());
+            }
+            if (AppPreferences.getPrefEnableLogging(context)) {
+                sFileHandler.setLevel(Level.INFO);
+            } else {
+                sFileHandler.setLevel(Level.OFF);
+            }
+            if (logger.getHandlers().length == 0) {
+                logger.addHandler(sFileHandler);
+            }
+        } catch (IOException e) {
+            // do nothing
+        }
+        return logger;
+    }
+
+    public static boolean logFileExists(Context context) {
+        File file = new File(getLogFilePath(context));
+        return file.exists();
     }
 
 }

@@ -9,17 +9,17 @@ import android.os.SystemClock;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 import org.alex.wirelesscontroller.AppPreferences;
-import org.alex.wirelesscontroller.MyLogger;
 import org.alex.wirelesscontroller.TimePickerFragment;
 import org.alex.wirelesscontroller.Utils;
 import org.alex.wirelesscontroller.services.AutoDisableRulesService;
 import org.alex.wirelesscontroller.services.ConnectionService;
 
 import java.util.Calendar;
+import java.util.logging.Level;
 
 public class ScheduleWakefulReceiver extends WakefulBroadcastReceiver {
 
-    private static final String TAG = "ScheduleWakefulReceiver";
+    private static final String CLASS_NAME = ScheduleWakefulReceiver.class.getName();
 
     public static Intent newIntent(Context context, int requestCode) {
         Intent intent = new Intent(context, ScheduleWakefulReceiver.class);
@@ -54,8 +54,9 @@ public class ScheduleWakefulReceiver extends WakefulBroadcastReceiver {
     public static void setAutoDisableRulesBroadcast(Context context, String startTime, String endTime,
                                                     boolean turnOn) {
 
-        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "setAutoDisableRulesBroadcast",
-                startTime, endTime, turnOn);
+        Utils.getLogger(context, CLASS_NAME)
+                .log(Level.INFO, "startTime: {0}, endTime: {1}, turnOn: {2}",
+                new Object[] { startTime, endTime, turnOn });
 
         // Intent for start time
         Intent startTimeIntent = newIntent(context, Utils.START_TIME_CODE);
@@ -138,7 +139,8 @@ public class ScheduleWakefulReceiver extends WakefulBroadcastReceiver {
 
     public static void setAutoEnableWifiBroadcast(Context context, boolean turnOn, int runIntervalIndex) {
 
-        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "setAutoEnableWifiBroadcast", turnOn, runIntervalIndex);
+        Utils.getLogger(context, CLASS_NAME)
+                .log(Level.INFO, "turnOn: {0}, runIntervalIndex: {1}", new Object[]{ turnOn, runIntervalIndex });
 
         Intent intent = ScheduleWakefulReceiver.newIntent(context, Utils.CONNECTION_SERVICE_CODE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Utils.CONNECTION_SERVICE_CODE,

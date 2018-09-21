@@ -22,7 +22,6 @@ import android.widget.Toast;
 import org.alex.wirelesscontroller.services.ConnectionService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -73,7 +72,7 @@ public class WhitelistActivity extends AppCompatActivity implements DeleteDialog
     }
 
     private void addWifiToWhitelist() {
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             if (ConnectionService.isWifiConnected(wifiInfo)) {

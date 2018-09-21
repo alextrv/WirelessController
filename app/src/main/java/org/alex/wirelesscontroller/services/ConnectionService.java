@@ -11,18 +11,18 @@ import android.os.SystemClock;
 import android.provider.Settings;
 
 import org.alex.wirelesscontroller.AppPreferences;
-import org.alex.wirelesscontroller.MyLogger;
 import org.alex.wirelesscontroller.R;
-import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
 import org.alex.wirelesscontroller.Utils;
+import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class ConnectionService extends IntentService {
 
-    private static final String TAG = "ConnectionService";
+    private static final String CLASS_NAME = ConnectionService.class.getName();
 
     public static Intent newIntent(Context context, int requestCode) {
         Intent intent = new Intent(context, ConnectionService.class);
@@ -46,8 +46,8 @@ public class ConnectionService extends IntentService {
         boolean isAirplaneMode = isAirplaneModeOn(context);
         if ((stopInAirplaneMode && isAirplaneMode) ||
                 AppPreferences.getPrefSuspendAutoEnableWifi(context)) {
-            MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "AIRPLANE_MODE",
-                    isAirplaneMode);
+            Utils.getLogger(context, CLASS_NAME)
+                    .log(Level.INFO, "Airplane Mode enabled: {0}", isAirplaneMode);
             ScheduleWakefulReceiver.completeWakefulIntent(intent);
             return;
         }
@@ -55,11 +55,12 @@ public class ConnectionService extends IntentService {
         // Turn off Bluetooth if preference set true
         if (AppPreferences.getPrefDisableBluetooth(context)) {
             disableBluetooth();
-            MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "Turn off Bluetooth");
+            Utils.getLogger(context, CLASS_NAME)
+                    .log(Level.INFO, "Turn off Bluetooth");
         }
 
         // Try to connect to Wi-Fi network. If fail then disable Wi-Fi
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (!isWifiHotspotEnabled(wifiManager)) {
             if (wifiManager.isWifiEnabled()) {
                 disableNotConnectedWifi(wifiManager);
@@ -69,8 +70,8 @@ public class ConnectionService extends IntentService {
                 disableNotConnectedWifi(wifiManager);
                 boolean enableWhitelist = AppPreferences.getPrefEnableWhitelist(context);
 
-                MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "White list enabled",
-                        enableWhitelist);
+                Utils.getLogger(context, CLASS_NAME)
+                        .log(Level.INFO, "White list enabled: {0}", enableWhitelist);
 
                 if (wifiManager.isWifiEnabled() && enableWhitelist) {
                     Set<String> wifiWhitelist = AppPreferences.getPrefWifiWhitelist(context);
@@ -79,8 +80,8 @@ public class ConnectionService extends IntentService {
                         String BSSID = wifiInfo.getBSSID();
                         String SSID = wifiInfo.getSSID();
                         String SSID_BSSID = getResources().getString(R.string.ssid_bssid, SSID, BSSID);
-                        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "SSID_BSSID",
-                                SSID_BSSID);
+                        Utils.getLogger(context, CLASS_NAME)
+                                .log(Level.INFO, "SSID_BSSID: {0}", SSID_BSSID);
                         if (BSSID == null || !wifiWhitelist.contains(SSID_BSSID)) {
                             wifiManager.setWifiEnabled(false);
                         }
@@ -91,11 +92,11 @@ public class ConnectionService extends IntentService {
             }
         }
 
-        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR,
-                "Is Wifi enabled", wifiManager.isWifiEnabled());
+        Utils.getLogger(context, CLASS_NAME)
+                .log(Level.INFO, "Wifi enabled: {0}", wifiManager.isWifiEnabled());
         if (wifiManager.isWifiEnabled()) {
-            MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR,
-                    wifiManager.getConnectionInfo().getSSID());
+            Utils.getLogger(context, CLASS_NAME)
+                    .log(Level.INFO, wifiManager.getConnectionInfo().getSSID());
         }
 
         ScheduleWakefulReceiver.completeWakefulIntent(intent);

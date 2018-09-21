@@ -5,17 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.alex.wirelesscontroller.AppPreferences;
-import org.alex.wirelesscontroller.MyLogger;
 import org.alex.wirelesscontroller.Utils;
+
+import java.util.logging.Level;
 
 public class StartupReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "StartupReceiver";
+    private static final String CLASS_NAME = StartupReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "BOOT_COMPLETED");
+        Utils.getLogger(context, CLASS_NAME)
+                .log(Level.INFO, "BOOT_COMPLETED");
 
         boolean isOn = AppPreferences.getPrefIsAutoEnableWifiOn(context);
         Utils.setAutoEnableWifiService(context, isOn);

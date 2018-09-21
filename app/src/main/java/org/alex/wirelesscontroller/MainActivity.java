@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_send_log:
-                if (MyLogger.getInstance(this).isLogFileExists()) {
-                    String logFile = MyLogger.getInstance(this).getLogFilePath();
+                if (Utils.logFileExists(getApplicationContext())) {
+                    String logFile = Utils.getLogFilePath(getApplicationContext());
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.setType(PLAIN_TEXT_TYPE);
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{ DEVELOPER_EMAIL });

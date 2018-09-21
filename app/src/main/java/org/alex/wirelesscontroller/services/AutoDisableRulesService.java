@@ -5,16 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.SystemClock;
-import android.util.Log;
 
 import org.alex.wirelesscontroller.AppPreferences;
-import org.alex.wirelesscontroller.MyLogger;
-import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
 import org.alex.wirelesscontroller.Utils;
+import org.alex.wirelesscontroller.receivers.ScheduleWakefulReceiver;
+
+import java.util.logging.Level;
 
 public class AutoDisableRulesService extends IntentService {
 
-    private static final String TAG = "AutoDisableRulesService";
+    private static final String CLASS_NAME = AutoDisableRulesService.class.getName();
 
     public AutoDisableRulesService() {
         super(null);
@@ -33,13 +33,14 @@ public class AutoDisableRulesService extends IntentService {
 
         int requestCode = intent.getIntExtra(Utils.REQUEST_CODE, -1);
 
-        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR, "REQUEST_CODE", requestCode);
+        Utils.getLogger(context, CLASS_NAME)
+                .log(Level.INFO, "REQUEST_CODE: {0}", requestCode);
 
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         if (requestCode == Utils.START_TIME_CODE) {
 
-            // If end time broadcast set than do work
+            // If end time broadcast set then do work
             if (ScheduleWakefulReceiver.isBroadcastOn(context, Utils.END_TIME_CODE)) {
 
                 // Turn off Wi-Fi
@@ -51,8 +52,6 @@ public class AutoDisableRulesService extends IntentService {
                 ConnectionService.disableBluetooth();
 
                 AppPreferences.setPrefSuspendAutoEnableWifi(context, true);
-            } else {
-                Log.i(TAG, "END_TIME is off");
             }
         } else if (requestCode == Utils.END_TIME_CODE) {
             // Sleep 2 seconds to ensure that if startTime and endTime running at the same time
@@ -76,8 +75,8 @@ public class AutoDisableRulesService extends IntentService {
             }
         }
 
-        MyLogger.getInstance(context).writeToFile(TAG, Utils.SEPARATOR,
-                "Is Wifi enabled", wifiManager.isWifiEnabled());
+        Utils.getLogger(context, CLASS_NAME)
+                .log(Level.INFO, "Wifi enabled: {0}", wifiManager.isWifiEnabled());
 
         ScheduleWakefulReceiver.completeWakefulIntent(intent);
     }
